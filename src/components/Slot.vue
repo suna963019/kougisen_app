@@ -1,81 +1,51 @@
 <template>
     <div class="content">
-        <div class="d-flex justify-space-between">
-            <h2>スコア : {{ score }}</h2>
-            <h2>残り回数 : {{ chance }}</h2>
-        </div>
-        <div class="slot_box d-flex">
-            <Lane v-bind:spin_check="spin_check[0]" v-bind:lane_num="0" v-on:add_value="add_value" ref="lane0" />
-            <Lane v-bind:spin_check="spin_check[1]" v-bind:lane_num="1" v-on:add_value="add_value" ref="lane1" />
-            <Lane v-bind:spin_check="spin_check[2]" v-bind:lane_num="2" v-on:add_value="add_value" ref="lane2" />
-        </div>
-        <div v-if="!spin_check_all && chance > 0" class="d-flex justify-center w-600">
-            <v-btn @click="spin">回転</v-btn>
-        </div>
-        <div v-if="chance == 0" class="d-flex justify-center">
-            <div class="restart">
-                <p>スコア：{{ score }}</p>
-                <p>順位：</p>
-                <v-btn @click="start">再挑戦</v-btn>
+        <div class="game_box">
+            <div class="d-flex justify-space-between w-600">
+                <h2>スコア : {{ score }}</h2>
+                <h2>残り回数 : {{ chance }}</h2>
+            </div>
+            <div class="slot_box d-flex">
+                <Lane v-bind:spin_check="spin_check[0]" v-bind:lane_num="0" v-on:add_value="add_value" ref="lane0" />
+                <Lane v-bind:spin_check="spin_check[1]" v-bind:lane_num="1" v-on:add_value="add_value" ref="lane1" />
+                <Lane v-bind:spin_check="spin_check[2]" v-bind:lane_num="2" v-on:add_value="add_value" ref="lane2" />
+            </div>
+            <div v-if="!spin_check_all && chance > 0" class="d-flex justify-center w-600">
+                <v-btn @click="spin">start</v-btn>
             </div>
         </div>
-        <div class="full_scale" v-if="this.startCheck">
+        <div v-if="startCheck" class="full_scale">
             <div class="set_name">
                 <h3 class="comment">制限時間は３分</h3>
                 <h3 class="comment">操作説明</h3>
                 <table class="comment">
                     <tr>
-                        <th>矢印キー上（↑）</th>
+                        <th>startボタン</th>
                         <td>:</td>
-                        <td>ブロックが右回転</td>
+                        <td>回転開始</td>
                     </tr>
                     <tr>
-                        <th>矢印キー右（→）</th>
+                        <th>stopボタン</th>
                         <td>:</td>
-                        <td>ブロックが右移動</td>
-                    </tr>
-                    <tr>
-                        <th>矢印キー上（←）</th>
-                        <td>:</td>
-                        <td>ブロックが左移動</td>
-                    </tr>
-                    <tr>
-                        <th>矢印キー下（↓）</th>
-                        <td>:</td>
-                        <td>ブロックが最下段に落ちる</td>
+                        <td>回転を一レーンずつ止める</td>
                     </tr>
                     <tr>
                         <th>スペースキー</th>
                         <td>:</td>
-                        <td>ブロックのキープと取り出し（一度目はキープのみ）</td>
+                        <td>回転開始 / 回転を左から一レーンずつ止める</td>
                     </tr>
                 </table>
                 <v-form @submit.prevent>
                     <v-text-field v-model="name" label="お名前(ニックネーム)" required></v-text-field>
-                    <v-btn type="submit" block @click="() => { if (name != '') { start_game() } }">開始</v-btn>
+                    <v-btn type="submit" block @click="start">開始</v-btn>
                 </v-form>
             </div>
         </div>
-        <div class="full_scale" v-if="endCheck">
-            <div class="result">
-                <table>
-                    <tr>
-                        <th>順位</th>
-                        <td>:</td>
-                        <td>{{ parseInt(number) + 1 }}位</td>
-                    </tr>
-                    <tr>
-                        <th>名前</th>
-                        <td>:</td>
-                        <td>{{ name }}</td>
-                    </tr>
-                    <tr>
-                        <th>点数</th>
-                        <td>:</td>
-                        <td>{{ score }}点</td>
-                    </tr>
-                </table>
-                <v-btn @click="start_game">再挑戦</v-btn>
+        <div v-if="chance == 0" class="d-flex justify-center full_scale">
+            <div class="restart">
+                <p>スコア：{{ score }}</p>
+                <p>順位：</p>
+                <v-btn @click="start">再挑戦</v-btn>
             </div>
         </div>
     </div>
@@ -92,6 +62,9 @@ export default {
             spin_check_all: false,
             spin_check: [false, false, false,],
             values: new Array(9),
+            startCheck: true,
+            number: 0,
+            name: '',
         };
     },
     components: {
@@ -129,15 +102,17 @@ export default {
                     if (i + l * 2 < 0 || i + l * 2 > 2) {
                         continue;
                     }
-                    console.log(start)
                     if (start === this.values[3 + i + l] && start === this.values[6 + i + l * 2]) {
-                        if (start=='７') {
+                        if (start == '７') {
                             this.score += 1000
-                        }else{
+                        } else {
                             this.score += 200
                         }
                     }
                 }
+            }
+            if (this.chance==0) {
+                this.addData()
             }
         },
         press_key(event) {
@@ -157,19 +132,39 @@ export default {
 
         },
         start() {
-            this.chance=10
-            this.score=0
+            if(this.name===''){
+                this.name='名無し'
+            }
+            this.startCheck=false
+            this.chance = 10
+            this.score = 0
             this.$refs.lane0.start()
             this.$refs.lane1.start()
             this.$refs.lane2.start()
-        }
+        },
+        async addData() {
+            const data = {
+                name: this.name,
+                point: this.score
+            }
+            const param = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }
+            const response = await fetch('http://127.0.0.1:8000/api/slot/add', param);
+            const result = await response.json();
+            this.number = result[0]
+            this.endCheck = true
+        },
     },
 }
 </script>
 
 <style scoped>
 .slot_box {
-    width: 600px;
     height: 600px;
     background-color: gainsboro;
     border: 1px solid black;
@@ -179,26 +174,20 @@ export default {
     padding: 20px 0;
     width: 600px;
     height: 80px;
-    background-color: black;
 }
 
 .content {
-    margin-top: 100px;
-    width: 600px;
+    padding-top: 100px;
+    height: 900px;
     position: relative;
 }
 
 .restart {
-    position: absolute;
     font-size: 80px;
-    background-color: bisque;
-    border: 1px solid black;
-    border-radius: 100px;
     padding: 50px;
-    top: 200px;
 }
 
-.full_scale{
+.full_scale {
     position: absolute;
     top: 0;
     z-index: 3;
@@ -208,9 +197,18 @@ export default {
 
 }
 
-.result{
-    font-size: 50px;
-    margin:200px auto;
-    width: 400px;
+.set_name {
+    margin: auto;
+    width: 600px;
+    border-radius: 10px;
+}
+
+.comment {
+    margin: 10px 20px;
+}
+
+.game_box {
+    width: 600px;
+    margin: auto;
 }
 </style>

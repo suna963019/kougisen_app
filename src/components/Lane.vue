@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="full_lane">
         <div class="lane">
             <div class="row col0">
                 <p>{{ row[0] }}</p>
@@ -14,8 +14,8 @@
                 <p>{{ row[3] }}</p>
             </div>
         </div>
-        <div class="d-flex justify-space-around w-200">
-            <v-btn v-if="spin_check" @click="stop">止める</v-btn>
+        <div class="d-flex justify-space-around button_block">
+            <v-btn v-if="spin_check" @click="stop">stop</v-btn>
         </div>
     </div>
 </template>
@@ -41,13 +41,13 @@ export default {
     },
     mounted() {
         this.start()
+        setInterval(this.changer, 8)
     },
     methods: {
         start() {
             let check_array = [true, true, true, true, true,]
             for (let l = 5; l > 0; l--) {
                 const num = Math.floor(Math.random() * l)
-                console.log(num)
                 let m
                 for (m = 0; m < 5; m++) {
                     if (check_array[num + m]) {
@@ -64,7 +64,6 @@ export default {
                 this.row[i] = this.rows[num]
                 this.color[i] = this.colors[num]
             }
-            setInterval(this.changer, 8)
         },
         changer() {
             if (this.spin_check || this.top_num != 0) {
@@ -96,15 +95,14 @@ export default {
 <style scoped>
 .lane {
     width: 200px;
-    height: 100%;
+    height: 600px;
     border: 1px solid black;
     position: relative;
     overflow: hidden;
 }
 
-.w-200 {
-    width: 200px;
-    height: 80px;
+.button_block {
+    height: 80px; 
     padding: 20px 0;
     background-color: black;
 }

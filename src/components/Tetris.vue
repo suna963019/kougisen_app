@@ -62,7 +62,7 @@
                 </table>
                 <v-form @submit.prevent>
                     <v-text-field v-model="name" label="お名前(ニックネーム)" required></v-text-field>
-                    <v-btn type="submit" block @click="() => { if (name != '') { start_game() } }">開始</v-btn>
+                    <v-btn type="submit" block @click="start_game()">開始</v-btn>
                 </v-form>
             </div>
         </div>
@@ -144,6 +144,9 @@ export default {
     },
     methods: {
         start_game() {
+            if(this.name===''){
+                this.name='名無し'
+            }
             this.stage = []
             for (let i = 0; i < 24; i++) {
                 this.stage.push([])
@@ -400,11 +403,10 @@ export default {
                 },
                 body: JSON.stringify(data),
             }
-            const response = await fetch('http://127.0.0.1:8000/api/ranking/add', param);
+            const response = await fetch('http://127.0.0.1:8000/api/tetris/add', param);
             const result = await response.json();
             this.number = result[0]
             this.endCheck = true
-            console.log(result)
         },
         cloneArray(array1, array2) {
             for (let i = 0; i < 4; i++) {

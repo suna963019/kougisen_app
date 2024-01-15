@@ -15,13 +15,13 @@
                 <div id="outline"></div>
             </div>
             <div>
-                <h2>next</h2>
+                <h2 class="box_title">next</h2>
                 <div id="next">
                     <div class="relative">
                         <Block v-for="nextBlock in nextBlocks" v-bind:block="nextBlock" />
                     </div>
                 </div>
-                <h2>keep</h2>
+                <h2 class="box_title">keep</h2>
                 <div id="keep">
                     <div class="relative">
                         <Block v-for="keepBlock in keepBlocks" v-bind:block="keepBlock" />
@@ -419,4 +419,4 @@ export default {
 
 
 </script>
-<style src="@/styles/tetris.css"></style>
+<style scoped src="@/styles/tetris.css"></style>

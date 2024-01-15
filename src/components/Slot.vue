@@ -19,6 +19,65 @@
                 <v-btn @click="start">再挑戦</v-btn>
             </div>
         </div>
+        <div class="full_scale" v-if="this.startCheck">
+            <div class="set_name">
+                <h3 class="comment">制限時間は３分</h3>
+                <h3 class="comment">操作説明</h3>
+                <table class="comment">
+                    <tr>
+                        <th>矢印キー上（↑）</th>
+                        <td>:</td>
+                        <td>ブロックが右回転</td>
+                    </tr>
+                    <tr>
+                        <th>矢印キー右（→）</th>
+                        <td>:</td>
+                        <td>ブロックが右移動</td>
+                    </tr>
+                    <tr>
+                        <th>矢印キー上（←）</th>
+                        <td>:</td>
+                        <td>ブロックが左移動</td>
+                    </tr>
+                    <tr>
+                        <th>矢印キー下（↓）</th>
+                        <td>:</td>
+                        <td>ブロックが最下段に落ちる</td>
+                    </tr>
+                    <tr>
+                        <th>スペースキー</th>
+                        <td>:</td>
+                        <td>ブロックのキープと取り出し（一度目はキープのみ）</td>
+                    </tr>
+                </table>
+                <v-form @submit.prevent>
+                    <v-text-field v-model="name" label="お名前(ニックネーム)" required></v-text-field>
+                    <v-btn type="submit" block @click="() => { if (name != '') { start_game() } }">開始</v-btn>
+                </v-form>
+            </div>
+        </div>
+        <div class="full_scale" v-if="endCheck">
+            <div class="result">
+                <table>
+                    <tr>
+                        <th>順位</th>
+                        <td>:</td>
+                        <td>{{ parseInt(number) + 1 }}位</td>
+                    </tr>
+                    <tr>
+                        <th>名前</th>
+                        <td>:</td>
+                        <td>{{ name }}</td>
+                    </tr>
+                    <tr>
+                        <th>点数</th>
+                        <td>:</td>
+                        <td>{{ score }}点</td>
+                    </tr>
+                </table>
+                <v-btn @click="start_game">再挑戦</v-btn>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -126,6 +185,7 @@ export default {
 .content {
     margin-top: 100px;
     width: 600px;
+    position: relative;
 }
 
 .restart {
@@ -136,5 +196,21 @@ export default {
     border-radius: 100px;
     padding: 50px;
     top: 200px;
+}
+
+.full_scale{
+    position: absolute;
+    top: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+
+}
+
+.result{
+    font-size: 50px;
+    margin:200px auto;
+    width: 400px;
 }
 </style>

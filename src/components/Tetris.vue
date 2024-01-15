@@ -136,6 +136,8 @@ export default {
             timerInterval: Number,
             startCheck: true,
             endCheck: false,
+            stop_count: 0,
+            push_down: false,
 
         }
     },
@@ -144,8 +146,8 @@ export default {
     },
     methods: {
         start_game() {
-            if(this.name===''){
-                this.name='名無し'
+            if (this.name === '') {
+                this.name = '名無し'
             }
             this.stage = []
             for (let i = 0; i < 24; i++) {
@@ -224,7 +226,7 @@ export default {
                         this.nowBlocksIndex[i][0] = nums[0]
                         this.nowBlocksIndex[i][1] = nums[1]
                         this.nowBlocks[i][0] = this.nowBlocksIndex[i][0] * 40
-                        this.nowBlocks[i][1] = (this.nowBlocksIndex[i][1] - 4) * 40 + this.fallCount
+                        this.nowBlocks[i][1] = (this.nowBlocksIndex[i][1] - 5) * 40 + this.fallCount
                     }
                 }
             }
@@ -248,6 +250,9 @@ export default {
             else if (downKey === 40) {
                 //下
                 //落下
+                if (this.push_down) {
+                    return
+                }
                 let max = 24
                 for (let i = 0; i < 4; i++) {
                     let high = 0
@@ -261,8 +266,9 @@ export default {
                 }
                 for (let i = 0; i < 4; i++) {
                     this.nowBlocksIndex[i][1] += max
-                    this.nowBlocks[i][1] = this.nowBlocksIndex[i][1] * 40 - 80
+                    this.nowBlocks[i][1] = this.nowBlocksIndex[i][1] * 40 - 160
                 }
+                this.push_down = true
                 this.end_turn()
             }
             else if (downKey === 32) {
@@ -298,6 +304,7 @@ export default {
                 this.nowBlocks[i][0] = this.nowBlocks[i][0] * 40 + 160
                 this.nowBlocks[i][1] = this.nowBlocks[i][1] * 40 - 160
                 this.nowBlocksIndex[i][0] += 4
+                this.nowBlocksIndex[i][1] += 1
             }
             const newblock = this.defaultBlocks[Math.floor(Math.random() * 7)];
             this.cloneArray(this.nextBlocks, newblock)
@@ -316,45 +323,49 @@ export default {
         },
         //ブロックが落ちていく処理
         fall() {
-            for (let i = 0; i < 4; i++) {
-                const block = this.nowBlocks[i];
-                block[1] += 2
-            }
-            this.fallCount += 2
             if (this.fallCount === 40) {
-                this.fallCount = 0
-                this.fallChange()
+                let downCheck = true
+                for (let i = 0; i < 4; i++) {
+                    const block = this.nowBlocksIndex[i]
+                    if (block[1] + 1 > 23 || this.stage[block[1] + 1][block[0]][2] > 0) {
+                        downCheck = false
+                        break
+                    }
+                }
+                if (!downCheck) {
+                    this.stop_count += 1
+                    if (this.stop_count == 50) {
+                        this.pushCheck=false
+                        this.stop_count = 0
+                        this.end_turn()
+                    }
+                } else {
+                    this.push_down=false
+                    this.stop_count = 0
+                    this.fallChange()
+                }
+            } else {
+                for (let i = 0; i < 4; i++) {
+                    const block = this.nowBlocks[i];
+                    block[1] += 2
+                }
+                this.fallCount += 2
             }
 
         },
         //マス目の入れ替え
         fallChange() {
-            let downCheck = true
+            this.fallCount = 0
             for (let i = 0; i < 4; i++) {
                 const block = this.nowBlocksIndex[i]
                 block[1] += 1
             }
-            for (let i = 0; i < 4; i++) {
-                const block = this.nowBlocksIndex[i]
-                if (block[1] + 1 > 23 || this.stage[block[1] + 1][block[0]][2] > 0) {
-                    downCheck = false
-                    break
-                }
-            }
-            if (!downCheck) {
-                this.end_turn()
-            }
         },
         end_turn() {
-            this.pushCheck = false
-            clearInterval(this.interval)
-            for (let i = 0; i < 4; i++) {
-                const block = this.nowBlocksIndex[i];
-                this.stage[block[1]][block[0]][2] = block[2]
-                this.nowBlocks[i][2] = 0
-            }
             this.fallCount = 0
-            this.linecheck()
+            clearInterval(this.interval)
+            setTimeout(this.linecheck, 300)
+            // this.linecheck()
         },
         linecheck() {
             this.keepSecond = true
@@ -367,6 +378,13 @@ export default {
                         return
                     }
                 }
+            }
+            this.pushCheck = false
+            // clearInterval(this.interval)
+            for (let i = 0; i < 4; i++) {
+                const block = this.nowBlocksIndex[i];
+                this.stage[block[1]][block[0]][2] = block[2]
+                this.nowBlocks[i][2] = 0
             }
             let delLine = []
             for (let i = 4; i < 24; i++) {
@@ -389,6 +407,8 @@ export default {
                     }
                 }
             }
+            // setTimeout(this.start_turn,1000)
+            this.push_down=false
             this.start_turn()
         },
         async addData() {

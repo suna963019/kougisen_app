@@ -111,7 +111,7 @@ export default {
                     }
                 }
             }
-            if (this.chance==0) {
+            if (this.chance == 0) {
                 this.addData()
             }
         },
@@ -131,11 +131,17 @@ export default {
             }
 
         },
+        restart() {
+            this.$refs.lane0.start()
+            this.$refs.lane1.start()
+            this.$refs.lane2.start()
+            this.start()
+        },
         start() {
-            if(this.name===''){
-                this.name='名無し'
+            if (this.name === '') {
+                this.name = '名無し'
             }
-            this.startCheck=false
+            this.startCheck = false
             this.chance = 10
             this.score = 0
             this.$refs.lane0.start()

@@ -317,8 +317,9 @@ export default {
                 this.nowBlocks[i][0] = this.nowBlocks[i][0] * 40 + 160
                 this.nowBlocks[i][1] = this.nowBlocks[i][1] * 40 - 160
                 this.nowBlocksIndex[i][0] += 4
+                this.nowBlocksIndex[i][1] += 1
             }
-            this.interval = setInterval(this.fall, 10)
+            this.interval = setInterval(this.fall, 15)
             this.pushCheck = true
         },
         //ブロックが落ちていく処理
@@ -334,7 +335,7 @@ export default {
                 }
                 if (!downCheck) {
                     this.stop_count += 1
-                    if (this.stop_count == 50) {
+                    if (this.stop_count == 30) {
                         this.pushCheck=false
                         this.stop_count = 0
                         this.end_turn()
@@ -364,7 +365,7 @@ export default {
         end_turn() {
             this.fallCount = 0
             clearInterval(this.interval)
-            setTimeout(this.linecheck, 300)
+            setTimeout(this.linecheck, 500)
             // this.linecheck()
         },
         linecheck() {

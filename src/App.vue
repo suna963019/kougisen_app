@@ -17,7 +17,10 @@
             <v-btn>Tetris</v-btn>
           </router-link>
           <router-link to="/slot" class="normal">
-            <v-btn>slot</v-btn>
+            <v-btn>Slot</v-btn>
+          </router-link>
+          <router-link to="/typing" class="normal">
+            <v-btn>Typing</v-btn>
           </router-link>
           <router-link to="/ranking" class="normal">
             <v-btn>Ranking</v-btn>
@@ -25,9 +28,7 @@
         </div>
       </v-app-bar>
       <v-container>
-        <div class="content">
-          <router-view></router-view>
-        </div>
+        <router-view></router-view>
       </v-container>
     </v-main>
   </v-app>
@@ -49,9 +50,5 @@ p {
 
 #home-links button {
   margin: 0 3vw;
-}
-
-.content {
-  margin: auto;
 }
 </style>

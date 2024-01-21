@@ -1,71 +1,65 @@
 <template>
-    <h2>テトリススコアランキング</h2>
+    <v-select class="selecter" @update:modelValue="select_table()" :items="title" v-model="select" item-title="name" item-value="str" return-object>
+    </v-select>
     <table>
         <tr>
             <th>順位</th>
             <th>名前</th>
             <th>得点</th>
         </tr>
-        <tr v-for="(data, index) in tetris_table">
-            <td>{{ parseInt(index) + 1 }}</td>
+        <tr v-for="(data, index) in table.data">
+            <td>{{ currentPage * 10 + parseInt(index) + 1 }}</td>
             <td>{{ data.name }}</td>
             <td>{{ data.point }}</td>
         </tr>
     </table>
-    <h2>スロットスコアランキング</h2>
-    <table>
-        <tr>
-            <th>順位</th>
-            <th>名前</th>
-            <th>得点</th>
-        </tr>
-        <tr v-for="(data, index) in slot_table">
-            <td>{{ parseInt(index) + 1 }}</td>
-            <td>{{ data.name }}</td>
-            <td>{{ data.point }}</td>
-        </tr>
-    </table>
+    <v-pagination :length="lastPage"></v-pagination>
 </template>
 <script>
 export default {
     data() {
         return {
-            tetris_table: Object,
-            slot_table: Object,
+            title: [
+                { name: 'テトリス', str: 'tetris' },
+                { name: 'スロット', str: 'slot' },
+                { name: 'タイピング', str: 'typing' },
+            ],
+            now_title: '',
+            select: { name: 'テトリス', str: 'tetris' },
+            table: Object,
+            currentPage: 0,
+            lastPage: 0,
         }
     },
     mounted() {
-        this.get_tetris()
-        this.get_slot()
+        this.get_table()
     },
     methods: {
-        async get_tetris() {
-            const url = 'http://127.0.0.1:8000/api/tetris/index';
+        select_table(){
+            setTimeout(this.get_table,1)
+        },
+        async get_table() {
+            const url = 'http://127.0.0.1:8000/api/' + this.select['str'] + '/index';
             // 指定したURLからデータを取得
             const response = await fetch(url);
             // データをJavaScriptのオブジェクトに変換
             const data = await response.json();
-            this.tetris_table = data;
+            this.table = data;
+            this.lastPage = this.table.last_page
         },
-        async get_slot() {
-            const url = 'http://127.0.0.1:8000/api/slot/index';
-            // 指定したURLからデータを取得
-            const response = await fetch(url);
-            // データをJavaScriptのオブジェクトに変換
-            const data = await response.json();
-            this.slot_table = data;
-        },
+
     }
 
 }
 </script>
 <style scoped>
-h2{
+h2 {
     margin: 40px;
     text-align: center;
 }
+
 table {
-    margin: 0 auto ;
+    margin: 0 auto;
     width: 600px;
     font-size: 30px;
 }
@@ -78,5 +72,9 @@ td {
 
 td {
     text-align: center;
+}
+
+.selecter{
+    width: 200px;
 }
 </style>

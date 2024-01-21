@@ -10,6 +10,7 @@
           </router-link>
         </v-app-bar-title>
         <div id="home-links">
+          <!-- v-tabs実装予定 -->
           <router-link to="/" class="normal">
             <v-btn>infomation</v-btn>
           </router-link>

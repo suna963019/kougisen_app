@@ -105,7 +105,7 @@ export default {
             if (this.now == event.key) {
                 this.set_next_char()
             }
-            if (this.count == 14) {
+            if (this.count == 13) {
                 this.addData()
                 return
             }
@@ -121,16 +121,17 @@ export default {
             this.message2 = str.slice(1)
         },
         set_next_string() {
+            this.count++
             this.message1 = ''
             this.now = this.default[this.count].charAt(0)
             this.message2 = this.default[this.count].slice(1)
-            this.count++
         },
         reset() {
             this.count = 0
             this.message1 = ''
             this.now = ''
             this.message2 = this.default[0]
+            this.endCheck=false
             this.set_next_char()
         },
         async addData() {

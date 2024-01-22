@@ -16,6 +16,7 @@
         </div>
         <div v-if="startCheck" class="full_scale">
             <div class="set_name">
+                <h2 class="text-center">Slot Game</h2>
                 <h3 class="comment">制限時間は３分</h3>
                 <h3 class="comment">操作説明</h3>
                 <table class="comment">
@@ -168,6 +169,7 @@ export default {
     },
 }
 </script>
+<style src="@/styles/form.css"></style>
 
 <style scoped>
 .slot_box {
@@ -183,7 +185,7 @@ export default {
 }
 
 .content {
-    padding-top: 100px;
+    padding-top: 50px;
     height: 900px;
     position: relative;
 }
@@ -192,25 +194,8 @@ export default {
     font-size: 80px;
     padding: 50px;
 }
-
-.full_scale {
-    position: absolute;
-    top: 0;
-    z-index: 3;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-
-}
-
-.set_name {
+h2{
     margin: auto;
-    width: 600px;
-    border-radius: 10px;
-}
-
-.comment {
-    margin: 10px 20px;
 }
 
 .game_box {

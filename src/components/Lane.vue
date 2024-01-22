@@ -41,7 +41,7 @@ export default {
     },
     mounted() {
         this.start()
-        setInterval(this.changer, 8)
+        setInterval(this.changer, 1 )
     },
     methods: {
         start() {

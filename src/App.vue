@@ -29,7 +29,7 @@
         </div>
       </v-app-bar>
       <v-container>
-        <router-view></router-view>
+        <router-view id="view"></router-view>
       </v-container>
     </v-main>
   </v-app>

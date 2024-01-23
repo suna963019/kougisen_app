@@ -23,6 +23,9 @@
           <router-link to="/typing" class="normal">
             <v-btn>Typing</v-btn>
           </router-link>
+          <router-link to="/patinko" class="normal">
+            <v-btn>Patinko</v-btn>
+          </router-link>
           <router-link to="/ranking" class="normal">
             <v-btn>Ranking</v-btn>
           </router-link>

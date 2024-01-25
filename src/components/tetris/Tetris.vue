@@ -184,16 +184,11 @@ export default {
             //指定キー以外の動きの無効化
             event.preventDefault();
             const downKey = event.keyCode;
-            // if (downKey === 68) {
-            //     console.log('stage:' + this.stage)
-            //     console.log('now:' + this.nowBlocksIndex)
-            //     console.log('next:' + this.nextBlocks)
-            // }
             if (!this.pushCheck) {
                 return
             }
             // console.log(downKey)
-            if (downKey === 37) {
+            if (downKey === 37 || downKey === 65) {
                 //左
                 //左移動
                 let moveCheck = true
@@ -209,7 +204,7 @@ export default {
                         this.nowBlocksIndex[i][0] -= 1
                     }
                 }
-            } else if (downKey === 38) {
+            } else if (downKey === 38 || downKey === 87) {
                 //上
                 //右回転
                 let moveCheck = true
@@ -231,7 +226,7 @@ export default {
                     }
                 }
             }
-            else if (downKey === 39) {
+            else if (downKey === 39 || downKey === 68) {
                 //右
                 //右移動
                 let moveCheck = true
@@ -248,7 +243,7 @@ export default {
                     }
                 }
             }
-            else if (downKey === 40) {
+            else if (downKey === 40 || downKey === 83) {
                 //下
                 //落下
                 if (this.push_down) {
@@ -337,12 +332,12 @@ export default {
                 if (!downCheck) {
                     this.stop_count += 1
                     if (this.stop_count == 30) {
-                        this.pushCheck=false
+                        this.pushCheck = false
                         this.stop_count = 0
                         this.end_turn()
                     }
                 } else {
-                    this.push_down=false
+                    this.push_down = false
                     this.stop_count = 0
                     this.fallChange()
                 }
@@ -410,7 +405,7 @@ export default {
                 }
             }
             // setTimeout(this.start_turn,1000)
-            this.push_down=false
+            this.push_down = false
             this.start_turn()
         },
         async addData() {

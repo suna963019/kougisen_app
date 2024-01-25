@@ -1,33 +1,31 @@
 <template>
   <v-app>
     <v-main>
-      <v-app-bar class="head">
-        <v-app-bar-nav-icon>
-        </v-app-bar-nav-icon>
+      <v-app-bar class="bg-light-green light-green-darken-3">
         <v-app-bar-title>
-          <router-link to="/" class="normal">
+          <router-link to="/" class="normal text-white">
             奈良県立高等技術専門校展
           </router-link>
         </v-app-bar-title>
         <div id="home-links">
           <!-- v-tabs実装予定 -->
-          <router-link to="/" class="normal">
-            <v-btn>infomation</v-btn>
+          <router-link to="/" class="normal text-white">
+            <v-btn>ホーム</v-btn>
           </router-link>
-          <router-link to="/tetris" class="normal">
-            <v-btn>Tetris</v-btn>
+          <router-link to="/tetris" class="normal text-white">
+            <v-btn>テトリス</v-btn>
           </router-link>
-          <router-link to="/slot" class="normal">
-            <v-btn>Slot</v-btn>
+          <router-link to="/slot" class="normal text-white">
+            <v-btn>スロット</v-btn>
           </router-link>
-          <router-link to="/typing" class="normal">
-            <v-btn>Typing</v-btn>
+          <router-link to="/typing" class="normal text-white">
+            <v-btn>タイピング</v-btn>
           </router-link>
-          <router-link to="/patinko" class="normal">
-            <v-btn>Patinko</v-btn>
+          <router-link to="/blockbreaker" class="normal text-white">
+            <v-btn>ブロックくずし</v-btn>
           </router-link>
-          <router-link to="/ranking" class="normal">
-            <v-btn>Ranking</v-btn>
+          <router-link to="/ranking" class="normal text-white">
+            <v-btn>ランキング</v-btn>
           </router-link>
         </div>
       </v-app-bar>
@@ -54,5 +52,8 @@ p {
 
 #home-links button {
   margin: 0 3vw;
+}
+main{
+  background-color: rgb(223, 243, 193);
 }
 </style>

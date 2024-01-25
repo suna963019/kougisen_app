@@ -18,7 +18,7 @@ export default {
 <style>
 .raket {
     position: absolute;
-    top: 500px;
+    top: 650px;
     left: v-bind(block+'px');
     width: 100px;
     height: 4px;

@@ -13,7 +13,7 @@
     height: 810px;
     width: 410px;
     background-color: black;
-    border: 5px solid blue;
+    border: 5px solid green;
     overflow: hidden;
 }
 
@@ -29,7 +29,7 @@
     height: 240px;
     width: 240px;
     background-color: black;
-    border: 5px solid blue;
+    border: 5px solid green;
 }
 
 #keep {
@@ -39,7 +39,7 @@
     height: 240px;
     width: 240px;
     background-color: black;
-    border: 5px solid blue;
+    border: 5px solid green;
 }
 
 .relative {

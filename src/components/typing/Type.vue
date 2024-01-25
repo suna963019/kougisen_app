@@ -9,7 +9,7 @@
         </div>
         <div class="full_scale" v-if="!this.startCheck">
             <div class="set_name">
-                <h2 class="text-center"></h2>
+                <h2 class="text-center">タイピングゲーム</h2>
                 <h3 class="comment">制限時間なし</h3>
                 <h3 class="comment">操作説明</h3>
                 <p class="comment">　半角英字の文、又は文字が出てくるので同じものをキーボードで打ってください。<br>
@@ -158,9 +158,6 @@ export default {
 </script>
 
 <style scoped>
-.message1 {
-    color: rgb(182, 182, 182);
-}
 
 .content_box {
     position: relative;
@@ -178,18 +175,21 @@ export default {
 
 .message1 {
     margin-right: -2px;
+    background-color: rgb(223, 243, 193);
+    color: rgb(118, 154, 184);
 }
 
 .message2 {
     margin-left: -2px;
     padding-left: 1px;
     background-color: white;
+    background-color: rgb(223, 243, 193);
 }
 
 .now {
     padding-left: 2px;
     padding-right: 1px;
-    background-color: rgb(196, 196, 196);
+    background-color: rgb(230, 230, 230);
 }
 </style>
 <style src="@/styles/form.css"></style>

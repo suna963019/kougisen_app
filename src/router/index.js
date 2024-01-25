@@ -23,9 +23,9 @@ const routes = [
     component: () => import('../views/Type.vue'),
   },
   {
-    path: '/patinko',
-    name: 'Patinko',
-    component: () => import('../views/Patinko.vue'),
+    path: '/blockbreaker',
+    name: 'BlockBreaker',
+    component: () => import('../views/BlockBreaker.vue'),
   },
   {
     path: '/ranking',

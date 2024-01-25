@@ -16,7 +16,7 @@
         </div>
         <div v-if="startCheck" class="full_scale">
             <div class="set_name">
-                <h2 class="text-center">Slot Game</h2>
+                <h2 class="text-center">スロットゲーム</h2>
                 <h3 class="comment">制限時間は３分</h3>
                 <h3 class="comment">操作説明</h3>
                 <table class="comment">
@@ -174,7 +174,7 @@ export default {
 <style scoped>
 .slot_box {
     height: 600px;
-    background-color: gainsboro;
+    background-color: rgb(241, 241, 241);
     border: 1px solid black;
 }
 

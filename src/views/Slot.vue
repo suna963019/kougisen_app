@@ -2,7 +2,7 @@
     <Slot />
 </template>
 <script>
-import Slot from '@/components/Slot.vue';
+import Slot from '@/components/slot/Slot.vue';
 
 export default {
     components: { Slot }

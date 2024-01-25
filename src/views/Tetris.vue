@@ -1,8 +1,8 @@
 <template>
-        <Tetris />
+    <Tetris />
 </template>
 <script>
-import Tetris from '@/components/Tetris.vue';
+import Tetris from '@/components/tetris/Tetris.vue';
 
 export default {
     components: { Tetris }

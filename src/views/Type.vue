@@ -2,7 +2,7 @@
         <Type />
 </template>
 <script>
-import Type from '@/components/Type.vue';
+import Type from '@/components/typing/Type.vue';
 
 export default {
     components:{

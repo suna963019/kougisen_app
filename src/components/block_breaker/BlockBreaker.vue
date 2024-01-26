@@ -1,5 +1,6 @@
 <template>
     <div class="content">
+        <h2 class="text-center">score:{{ score }}point</h2>
         <div class="game_box">
             <Block v-bind:color="block" v-for="block in blocks" />
             <Ball v-bind:ball="ball" />
@@ -9,7 +10,7 @@
         <div v-if="startCheck" class="full_scale">
             <div class="set_name">
                 <h2 class="text-center">ブロックくずし</h2>
-                <h3 class="comment">制限時間は３分</h3>
+                <h3 class="comment">制限時間なし</h3>
                 <h3 class="comment">操作説明</h3>
                 <table class="comment">
                     <tr>
@@ -25,15 +26,15 @@
                 </table>
                 <v-form @submit.prevent>
                     <v-text-field v-model="name" label="お名前(ニックネーム)" required></v-text-field>
-                    <v-btn type="submit" block @click="start">開始</v-btn>
+                    <v-btn type="submit" block @click="start"  class="start_button">開始</v-btn>
                 </v-form>
             </div>
         </div>
         <div v-if="endCheck" class="d-flex justify-center full_scale">
             <div class="restart">
                 <p>スコア：{{ score }}</p>
-                <p>順位：{{ number }}</p>
-                <v-btn @click="start">再挑戦</v-btn>
+                <p>順位：{{ parseInt(number) + 1 }}</p>
+                <v-btn @click="start" class="start_button">再挑戦</v-btn>
             </div>
         </div>
     </div>
@@ -71,13 +72,22 @@ export default {
     },
     methods: {
         start() {
+            if (this.name === '') {
+                this.name = '名無し'
+            }
+            this.ball=[0, 0, 320, 450]
+            this.blocks = []
+            for (let i = 0; i < 80; i++) {
+                this.blocks.push(true)
+            }
             this.startCheck = false
+            this.endCheck = false
             this.ball[1] = -8
         },
         end() {
             this.ball[1] = 0
             this.ball[0] = 0
-            this.endCheck = true
+            this.addData()
         },
         keydown(event) {
             if (this.key == '') {
@@ -173,7 +183,7 @@ export default {
                         this.ball[3] < block_y + 30
                     //左
                     if (match_y &&
-                        this.ball[2] > block_x - 8 &&
+                        this.ball[2] > block_x - 16 &&
                         this.ball[2] < block_x &&
                         !this.blocks[i * 8 + l - 1]) {
                         block_check = true
@@ -224,6 +234,9 @@ export default {
 </script>
 <style src="@/styles/form.css"></style>
 <style scoped>
+h2{
+    color: green;
+}
 .content {
     padding-top: 50px;
     height: 900px;

@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="d-flex justify-space-around button_block">
-            <v-btn v-if="spin_check" @click="stop">stop</v-btn>
+            <v-btn v-if="spin_check" @click="stop" class="start_button">stop</v-btn>
         </div>
     </div>
 </template>
@@ -41,7 +41,7 @@ export default {
     },
     mounted() {
         this.start()
-        setInterval(this.changer, 1 )
+        setInterval(this.changer, 1)
     },
     methods: {
         start() {
@@ -102,7 +102,7 @@ export default {
 }
 
 .button_block {
-    height: 80px; 
+    height: 80px;
     padding: 20px 0;
     background-color: rgb(0, 201, 0);
 }

@@ -20,6 +20,6 @@ export default {
     width: 80px;
     height: 30px;
     border: 1px solid white;
-    background-color: v-bind(color ? 'black' : 'white');
+    background-color: v-bind(color ? 'green' : 'white');
 }
 </style>

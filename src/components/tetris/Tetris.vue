@@ -63,7 +63,7 @@
                 </table>
                 <v-form @submit.prevent>
                     <v-text-field v-model="name" label="お名前(ニックネーム)" required></v-text-field>
-                    <v-btn type="submit" block @click="start_game()">開始</v-btn>
+                    <v-btn type="submit" block @click="start_game()" class="start_button">開始</v-btn>
                 </v-form>
             </div>
         </div>
@@ -86,7 +86,7 @@
                         <td>{{ score }}点</td>
                     </tr>
                 </table>
-                <v-btn @click="start_game">再挑戦</v-btn>
+                <v-btn @click="start_game" class="start_button">再挑戦</v-btn>
             </div>
         </div>
     </div>

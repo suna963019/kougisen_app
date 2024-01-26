@@ -11,7 +11,7 @@
                 <Lane v-bind:spin_check="spin_check[2]" v-bind:lane_num="2" v-on:add_value="add_value" ref="lane2" />
             </div>
             <div v-if="!spin_check_all && chance > 0" class="d-flex justify-center w-600">
-                <v-btn @click="spin">start</v-btn>
+                <v-btn @click="spin" class="start_button">start</v-btn>
             </div>
         </div>
         <div v-if="startCheck" class="full_scale">
@@ -38,15 +38,15 @@
                 </table>
                 <v-form @submit.prevent>
                     <v-text-field v-model="name" label="お名前(ニックネーム)" required></v-text-field>
-                    <v-btn type="submit" block @click="start">開始</v-btn>
+                    <v-btn type="submit" block @click="start"  class="start_button">開始</v-btn>
                 </v-form>
             </div>
         </div>
         <div v-if="chance == 0" class="d-flex justify-center full_scale">
             <div class="restart">
                 <p>スコア：{{ score }}</p>
-                <p>順位：</p>
-                <v-btn @click="start">再挑戦</v-btn>
+                <p>順位：{{ parseInt(number) + 1 }}</p>
+                <v-btn @click="start" class="start_button">再挑戦</v-btn>
             </div>
         </div>
     </div>
@@ -190,11 +190,7 @@ export default {
     position: relative;
 }
 
-.restart {
-    font-size: 80px;
-    padding: 50px;
-}
-h2{
+h2 {
     margin: auto;
 }
 

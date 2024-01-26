@@ -23,6 +23,7 @@ export default {
                 { name: 'テトリス', str: 'tetris' },
                 { name: 'スロット', str: 'slot' },
                 { name: 'タイピング', str: 'typing' },
+                { name: 'ブロック崩し', str: 'blockbreaker' },
             ],
             now_title: '',
             select: { name: 'テトリス', str: 'tetris' },
@@ -67,7 +68,8 @@ table {
 table,
 th,
 td {
-    border: 1px solid black;
+    border: 1px solid green;
+    color: green;
 }
 
 td {

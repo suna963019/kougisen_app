@@ -28,6 +28,11 @@ const routes = [
     component: () => import('../views/BlockBreaker.vue'),
   },
   {
+    path: '/blackjack',
+    name: 'BlackJack',
+    component: () => import('../views/BlackJack.vue'),
+  },
+  {
     path: '/ranking',
     name: 'Ranking',
     component: () => import('../views/Ranking.vue'),

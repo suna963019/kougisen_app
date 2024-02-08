@@ -41,6 +41,15 @@
                 </router-link>
             </div>
             <div class="card">
+                <router-link to="/blackjack" class="normal">
+                    <div class="row">
+                        <h2>ブラックジャック</h2>
+                        <p>幸運を祈る。</p>
+                    </div>
+                    <img src="@/assets/blackjack_image.png" alt="" class="game_img">
+                </router-link>
+            </div>
+            <div class="card">
                 <router-link to="/ranking" class="normal">
                     <div class="row">
                         <h2>ランキング</h2>

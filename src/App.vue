@@ -3,8 +3,8 @@
     <v-main>
       <v-app-bar class="bg-light-green light-green-darken-3">
         <v-app-bar-title>
-          <router-link to="/" class="normal text-white">
-            奈良県立高等技術専門校展
+          <router-link to="/" class="normal bar-title text-white">
+            ゲーム集
           </router-link>
         </v-app-bar-title>
         <div id="home-links">
@@ -23,6 +23,9 @@
           </router-link>
           <router-link to="/blockbreaker" class="normal text-white">
             <v-btn>ブロックくずし</v-btn>
+          </router-link>
+          <router-link to="/blackjack" class="normal text-white">
+            <v-btn>ブラックジャック</v-btn>
           </router-link>
           <router-link to="/ranking" class="normal text-white">
             <v-btn>ランキング</v-btn>
@@ -49,9 +52,13 @@ p {
 .normal {
   text-decoration: none;
 }
-
+.bar-title{
+  margin-left: 30px;
+  font-size: 30px;
+}
 #home-links button {
-  margin: 0 3vw;
+  font-size: 20px;
+  margin: 0 10px;
 }
 main{
   background-color: rgb(223, 243, 193);

@@ -1,27 +1,31 @@
 <template>
-    <div id="contents">
-        <p id="check_win"></p>
-        <div id="dearer_card">
-
+    <div class="game_box">
+        <div class="card_box">
+            <Card v-for="data in dearer_card" :card-data="data" />
         </div>
         <div id="point_box">
             <p>{{ this.point }} point</p>
         </div>
         <div id="next_box">
-            <button v-if="next" id="next" onclick="set()">next</button>
+            <button v-if="next" id="next" @click="set()">next</button>
+            <p id="check_win">{{ check_win.text }}</p>
         </div>
         <div id="button_box">
-            <button id="double" onclick="double()">Double</button>
-            <button id="hit" onclick="hit()">Hit</button>
-            <button id="stand" onclick="stand()">Stand</button>
+            <button id="double" @click="double()">Double</button>
+            <button id="hit" @click="hit()">Hit</button>
+            <button id="stand" @click="stand()">Stand</button>
         </div>
-        <div id="my_card">
-
+        <div class="card_box">
+            <Card v-for="data in my_card" :card-data="data" />
         </div>
     </div>
 </template>
 <script>
+import Card from './Card.vue';
 export default {
+    components: {
+        Card
+    },
     data() {
         return {
             cardList: [],
@@ -33,18 +37,19 @@ export default {
             playerCardsPointArray: [],
             dearerCardsPointArray: [],
             moveCheck: true,
-            point: 10,
+            point: 100,
             pointReturn: 0,
-            my_card:'',
-            dearer_card:'',
-            check_win:'',
-            next:false,
+            my_card: [],
+            dearer_card: [],
+            check_win: { text: '', color: 'none' },
+            next: false,
         }
     },
     mounted() {
         this.set()
     },
     methods: {
+        //初期化
         set() {
             this.pointReturn = 10;
             this.cardList = [];
@@ -64,42 +69,42 @@ export default {
             this.playerCardsPointArray = [];
             this.dearerCardsPointArray = [];
             this.moveCheck = true;
-            this.my_card = "";
-            this.dearer_card = "";
-            this.check_win = "";
-            this.next=false
+            this.my_card = [];
+            this.dearer_card = [];
+            this.check_win = [];
+            this.next = false
             this.start();
         },
+        //ボタン処理
         double() {
             if (this.moveCheck) {
                 this.pointReturn = 20;
-                HandOutCard();
-                dearerStart();
+                if (this.HandOutCard()) {
+                    this.dearerStart();
+                }
             }
         },
         hit() {
             if (this.moveCheck) {
-                HandOutCard();
+                this.HandOutCard();
             }
         },
         stand() {
             if (this.moveCheck) {
-                dearerStart();
+                this.dearerStart();
             }
         },
         start() {
-            dearerHandOutCards();
-            HandOutCard();
-            dearerHandOutCards();
-            HandOutCard();
+            this.dearerHandOutCards();
+            this.HandOutCard();
+            this.dearerHandOutCards();
+            this.HandOutCard();
         },
         end() {
-            deckCheck();
-            this.next=true;
+            this.deckCheck();
+            this.next = true;
         },
-
-// -------ここまで---------------------------------
-
+        //ポイントが超えてないかチェック
         checkOutPoints(pointList) {
             let allPoint = 0;
             let allPoint2 = 0;
@@ -122,22 +127,25 @@ export default {
             }
             return [allPointCheck, allPoint, allPoint2Check, allPoint2];
         },
+        //プレイヤーがカードをもらう
         HandOutCard() {
-            const myCardElement = document.getElementById("my_card");
-            let myCardArray = randomSelect();
-            let myCardKind = cardKindsChange(myCardArray[0]);
-            myCardElement.insertAdjacentHTML("beforeend", `<div id="my_card_${myCardNum}" class="my_card card"><p>${myCardKind[0]} ${myCardArray[1]}</p></div>`);
-            document.querySelector(`#my_card_${myCardNum++}`).style.color = `${myCardKind[1]}`;
+            let myCardArray = this.randomSelect();
+            let myCardKind = this.cardKindsChange(myCardArray[0]);
+            this.my_card.push({ num: myCardArray[1], type: myCardKind[0], color: myCardKind[1] });
             let playerPlusPoint = myCardArray[1];
             if (playerPlusPoint > 10) {
                 playerPlusPoint = 10;
             }
-            playerCardsPointArray.push(playerPlusPoint);
-            if (checkOutPoints(playerCardsPointArray)[0]) {
-                moveCheck = false;
-                winPrint(false);
+            this.playerCardsPointArray.push(playerPlusPoint);
+            if (this.checkOutPoints(this.playerCardsPointArray)[0]) {
+                this.moveCheck = false;
+                this.winPrint(false);
+                return false
             }
-        }, cardKindsChange(num) {
+            return true
+        },
+        //カードのタイプの置き換え
+        cardKindsChange(num) {
             let cardKinds;
             let cardColor;
             switch (num) {
@@ -160,26 +168,29 @@ export default {
                 default:
             }
             return [cardKinds, cardColor];
-        }, randomSelect() {
+        },
+        //カードのランダム選択
+        randomSelect() {
             let cardSelectIndex;
             let cardSelect;
             while (true) {
                 cardSelectIndex = Math.floor(Math.random() * 52);
-                cardSelect = cardList[cardSelectIndex];
-                if (cardCheck[cardSelectIndex] === 0) {
-                    cardCheck[cardSelectIndex] = 1;
+                cardSelect = this.cardList[cardSelectIndex];
+                if (this.cardCheck[cardSelectIndex] === 0) {
+                    this.cardCheck[cardSelectIndex] = 1;
                     break;
                 }
             }
             return cardSelect;
         },
+        //ディーラーのターンの処理
         dearerStart() {
             let dearerPointCheckArray;
             let playerPointCheckArray;
             while (true) {
-                dearerPointCheckArray = checkOutPoints(dearerCardsPointArray);
-                playerPointCheckArray = checkOutPoints(playerCardsPointArray);
-                if (pointArrayCheck()) {
+                dearerPointCheckArray = this.checkOutPoints(this.dearerCardsPointArray);
+                playerPointCheckArray = this.checkOutPoints(this.playerCardsPointArray);
+                if (this.pointArrayCheck()) {
                     break;
                 }
                 if (dearerPointCheckArray[3] >= 17 && dearerPointCheckArray[3] <= 21) {
@@ -187,20 +198,21 @@ export default {
                 } else if (dearerPointCheckArray[1] > 17) {
                     break;
                 } else {
-                    dearerHandOutCards();
+                    this.dearerHandOutCards();
                 }
             }
 
             if (dearerPointCheckArray[0]) {
-                winPrint(true);
+                this.winPrint(true);
             } else {
-                winCheck();
+                this.winCheck();
             }
 
         },
+        //勝敗確認
         pointArrayCheck() {
-            let dearerPointCheckArray = checkOutPoints(dearerCardsPointArray);
-            let playerPointCheckArray = checkOutPoints(playerCardsPointArray);
+            let dearerPointCheckArray = this.checkOutPoints(this.dearerCardsPointArray);
+            let playerPointCheckArray = this.checkOutPoints(this.playerCardsPointArray);
             let playerPointCheck = playerPointCheckArray[1];
             let dearerPointCheck = dearerPointCheckArray[1];
             if (!playerPointCheckArray[2]) {
@@ -215,20 +227,21 @@ export default {
                 return false;
             }
 
-        }, dearerHandOutCards() {
-            const dearerCardElement = document.getElementById("dearer_card");
-            let dearerCardArray = randomSelect();
-            let dearerCardKind = cardKindsChange(dearerCardArray[0]);
-            dearerCardElement.insertAdjacentHTML("beforeend", `<div id="dearer_card_${dearerCardNum}" class="dearer_card card"><p>${dearerCardKind[0]} ${dearerCardArray[1]}</p></div>`);
-            document.querySelector(`#dearer_card_${dearerCardNum++}`).style.color = `${dearerCardKind[1]}`;
+        },
+        //ディーラーがカードをもらう
+        dearerHandOutCards() {
+            let dearerCardArray = this.randomSelect();
+            let dearerCardKind = this.cardKindsChange(dearerCardArray[0]);
+            this.dearer_card.push({ num: dearerCardArray[1], type: dearerCardKind[0], color: dearerCardKind[1] })
             let dearerPlusPoint = dearerCardArray[1];
             if (dearerPlusPoint > 10) {
                 dearerPlusPoint = 10;
             }
-            dearerCardsPointArray.push(dearerPlusPoint);
+            this.dearerCardsPointArray.push(dearerPlusPoint);
         },
+        //勝敗確認後の処理
         winCheck(playerPoint) {
-            let playerPointCheckArray = checkOutPoints(playerCardsPointArray);
+            let playerPointCheckArray = this.checkOutPoints(this.playerCardsPointArray);
             let playerPointCheck;
             if (!playerPointCheckArray[2]) {
                 playerPointCheck = playerPointCheckArray[3];
@@ -238,7 +251,7 @@ export default {
                 playerPointCheck = 0;
             }
 
-            let dearerPointCheckArray = checkOutPoints(dearerCardsPointArray);
+            let dearerPointCheckArray = this.checkOutPoints(this.dearerCardsPointArray);
             let dearerPointCheck;
             if (!dearerPointCheckArray[2]) {
                 dearerPointCheck = dearerPointCheckArray[3];
@@ -247,57 +260,100 @@ export default {
             } else {
                 dearerPointCheck = 1;
             }
-
-            console.log(playerPointCheck)
-            console.log(dearerPointCheck)
-            console.log(playerPointCheckArray)
-            console.log(dearerPointCheckArray)
             if (playerPointCheck > dearerPointCheck) {
-                winPrint(true);
+                this.winPrint(true);
             } else if (playerPointCheck < dearerPointCheck) {
-                winPrint(false);
+                this.winPrint(false);
             } else {
-                const checkWin = document.getElementById("check_win");
-                checkWin.textContent = "draw";
-                checkWin.style.color = "gray";
-                end();
+                this.check_win.text = "draw";
+                this.check_win.color = "gray";
+                this.end();
             }
 
 
-        }, winPrint(winnerCheck) {
-            moveCheck = false;
-            const checkWin = document.getElementById("check_win");
+        },
+        //決着後処理
+        winPrint(winnerCheck) {
+            this.moveCheck = false;
             if (winnerCheck) {
-                checkWin.textContent = "Win";
-                checkWin.style.color = "red";
-                point += pointReturn;
+                this.check_win.text = "Win";
+                this.check_win.color = "red";
+                this.point += this.pointReturn;
             } else if (!winnerCheck) {
-                checkWin.textContent = "Lose";
-                checkWin.style.color = "blue";
-                point -= pointReturn;
+                this.check_win.text = "Lose";
+                this.check_win.color = "blue";
+                this.point -= this.pointReturn;
             }
-            document.getElementById("point").textContent = point;
-            end();
-        }, deckCheck() {
+            this.end();
+        },
+        //デッキの確認
+        deckCheck() {
             let checkUsedCount = 0;
-            for (const i of cardCheck) {
+            for (const i of this.cardCheck) {
                 if (i === 0) {
 
                     break;
                 }
             }
             if (checkUsedCount > 26) {
-                deckReset();
+                this.deckReset();
             }
         },
+        //デッキの初期化
         deckReset() {
-            for (const i of cardCheck) {
+            for (const i of this.cardCheck) {
                 i = 0;
             }
         }
-
-
-
     },
 }
 </script>
+<style scoped>
+.game_box {
+    height: 800px;
+    width: 1200px;
+    margin: auto;
+    padding: 30px 60px;
+    background-color: green;
+    border: 8px solid greenyellow;
+    border-radius: 10px;
+}
+
+.card_box {
+    display: flex;
+}
+
+#point_box {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    color: whitesmoke;
+}
+
+#next_box {
+    display: flex;
+    height: 70px;
+}
+
+#check_win {
+    margin-left: 400px;
+    text-align: center;
+    font-size: 50px;
+    color: v-bind(check_win.color);
+}
+
+#button_box {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    padding: 0 5px;
+    margin: 10px;
+    font-size: 30px;
+    border: 3px solid whitesmoke;
+    border-radius: 15px;
+    color: whitesmoke;
+}
+</style>

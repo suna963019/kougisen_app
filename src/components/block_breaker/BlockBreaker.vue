@@ -245,7 +245,7 @@ h2{
 
 .game_box {
     position: relative;
-    width: 647px;
+    width: 648px;
     padding-bottom: 400px;
     margin: 30px auto;
     display: flex;
